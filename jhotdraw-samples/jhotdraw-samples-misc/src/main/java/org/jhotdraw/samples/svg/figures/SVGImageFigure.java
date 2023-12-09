@@ -7,6 +7,7 @@
  */
 package org.jhotdraw.samples.svg.figures;
 
+import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
 import org.jhotdraw.draw.figure.ImageHolderFigure;
 import java.awt.*;
 import java.awt.event.*;
@@ -36,6 +37,8 @@ import org.jhotdraw.util.*;
  */
 public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, ImageHolderFigure {
 
+
+
     private static final long serialVersionUID = 1L;
     /**
      * This rectangle describes the bounds into which we draw the image.
@@ -63,10 +66,11 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
     /**
      * Creates a new instance.
      */
+    @FeatureEntryPoint("ImageFigure")
     public SVGImageFigure() {
         this(0, 0, 0, 0);
     }
-
+    @FeatureEntryPoint("ImageFigure")
     public SVGImageFigure(double x, double y, double width, double height) {
         rectangle = new Rectangle2D.Double(x, y, width, height);
         SVGAttributeKeys.setDefaults(this);
