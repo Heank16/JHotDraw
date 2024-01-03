@@ -21,6 +21,8 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Github authentication
+        env:
+          token: ${{ secrets.M2_PASSWORD }}
         run: printenv
-      - name: Build with Maven
-        run: mvn clean install -DskipTests
+ #     - name: Build with Maven
+  #      run: mvn clean install -DskipTests
