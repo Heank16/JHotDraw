@@ -69,6 +69,7 @@ public class SVGTextFigure
     public SVGTextFigure() {
         this("Text");
     }
+
     @FeatureEntryPoint("SVGTextFigure")
     public SVGTextFigure(String text) {
         setText(text);
