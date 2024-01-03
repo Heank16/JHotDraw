@@ -12,10 +12,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      USER_PACKAGE_READ: ${{ secrets.USER_PACKAGE_READ }}
-      TOKEN_PACKAGE_READ: ${{ secrets.M2_PASSWORD }}
-
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 11
@@ -24,6 +20,7 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
           cache: maven
-          repo-token: ${{ secrets.M2_PASSWORD }}
+      - name: Github authentication
+        run: printenv
       - name: Build with Maven
         run: mvn clean install -DskipTests
