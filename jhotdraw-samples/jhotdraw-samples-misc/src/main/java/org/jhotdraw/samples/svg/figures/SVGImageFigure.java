@@ -14,6 +14,7 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.image.*;
 import java.io.*;
+import java.nio.file.Files;
 import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -79,7 +80,6 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
     // DRAWING
     @Override
     public void draw(Graphics2D g) {
-        //super.draw(g);
         double opacity = get(OPACITY);
         opacity = Math.min(Math.max(0d, opacity), 1d);
         if (opacity != 0d) {
@@ -246,7 +246,7 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
     // EDITING
     @Override
     public Collection<Handle> createHandles(int detailLevel) {
-        LinkedList<Handle> handles = new LinkedList<Handle>();
+        LinkedList<Handle> handles = new LinkedList<>();
         switch (detailLevel % 2) {
             case -1: // Mouse hover handles
                 handles.add(new BoundsOutlineHandle(this, false, true));
@@ -417,7 +417,6 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
     @Override
     public BufferedImage getBufferedImage() {
         if (bufferedImage == null && imageData != null) {
-            //System.out.println("recreateing bufferedImage");
             try {
                 bufferedImage = ImageIO.read(new ByteArrayInputStream(imageData));
             } catch (Throwable e) {
@@ -460,16 +459,13 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
 
     @Override
     public void loadImage(File file) throws IOException {
-        InputStream in = new FileInputStream(file);
-        try {
+        try (InputStream in = Files.newInputStream(file.toPath())) {
             loadImage(in);
         } catch (Throwable t) {
             ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
             IOException e = new IOException(labels.getFormatted("file.failedToLoadImage.message", file.getName()));
             e.initCause(t);
             throw e;
-        } finally {
-            in.close();
         }
     }
 
