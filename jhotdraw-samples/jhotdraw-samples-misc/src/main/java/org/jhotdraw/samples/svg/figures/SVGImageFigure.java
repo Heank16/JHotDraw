@@ -17,7 +17,6 @@ import java.io.*;
 import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import org.jhotdraw.draw.*;
 import static org.jhotdraw.draw.AttributeKeys.TRANSFORM;
 import org.jhotdraw.draw.event.TransformRestoreEdit;
 import org.jhotdraw.draw.handle.BoundsOutlineHandle;
@@ -88,38 +87,44 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
             if (opacity != 1d) {
                 g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) opacity));
             }
-            BufferedImage image = getBufferedImage();
-            if (image != null) {
-                if (get(TRANSFORM) != null) {
-                    // FIXME - We should cache the transformed image.
-                    //         Drawing a transformed image appears to be very slow.
-                    Graphics2D gx = (Graphics2D) g.create();
-                    // Use same rendering hints like parent graphics
-                    gx.setRenderingHints(g.getRenderingHints());
-                    gx.transform(get(TRANSFORM));
-                    gx.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
-                    gx.dispose();
-                } else {
-                    g.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
-                }
-            } else {
-                Shape shape = getTransformedShape();
-                g.setColor(Color.red);
-                g.setStroke(new BasicStroke());
-                g.draw(shape);
-            }
+
+            drawImage(g);
+
             if (opacity != 1d) {
                 g.setComposite(savedComposite);
             }
         }
     }
 
+    private void drawImage(Graphics2D g) {
+        BufferedImage image = getBufferedImage();
+        if (image != null) {
+            if (get(TRANSFORM) != null) {
+                Graphics2D gx = (Graphics2D) g.create();
+                // Use same rendering hints like parent graphics
+                gx.setRenderingHints(g.getRenderingHints());
+                gx.transform(get(TRANSFORM));
+                gx.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
+                gx.dispose();
+            } else {
+                g.drawImage(image, (int) rectangle.x, (int) rectangle.y, (int) rectangle.width, (int) rectangle.height, null);
+            }
+        } else {
+            Shape shape = getTransformedShape();
+            g.setColor(Color.red);
+            g.setStroke(new BasicStroke());
+            g.draw(shape);
+        }
+    }
+
     @Override
     protected void drawFill(Graphics2D g) {
+        // Comes from another class, is in use
     }
 
     @Override
     protected void drawStroke(Graphics2D g) {
+        // Comes from another class, is in use
     }
 
     // SHAPE AND BOUNDS
@@ -147,8 +152,7 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
     @Override
     public Rectangle2D.Double getDrawingArea() {
         Rectangle2D rx = getTransformedShape().getBounds2D();
-        Rectangle2D.Double r = (rx instanceof Rectangle2D.Double) ? (Rectangle2D.Double) rx : new Rectangle2D.Double(rx.getX(), rx.getY(), rx.getWidth(), rx.getHeight());
-        return r;
+        return (rx instanceof Rectangle2D.Double) ? (Rectangle2D.Double) rx : new Rectangle2D.Double(rx.getX(), rx.getY(), rx.getWidth(), rx.getHeight());
     }
 
     /**
@@ -263,7 +267,7 @@ public class SVGImageFigure extends SVGAttributedFigure implements SVGFigure, Im
     @Override
     public Collection<Action> getActions(Point2D.Double p) {
         final ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
-        LinkedList<Action> actions = new LinkedList<Action>();
+        LinkedList<Action> actions = new LinkedList<>();
         if (get(TRANSFORM) != null) {
             actions.add(new AbstractAction(labels.getString("edit.removeTransform.text")) {
                 private static final long serialVersionUID = 1L;

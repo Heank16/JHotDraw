@@ -7,6 +7,7 @@
  */
 package org.jhotdraw.samples.svg.figures;
 
+import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
 import org.jhotdraw.draw.figure.TextHolderFigure;
 import java.awt.*;
 import java.awt.font.*;
@@ -45,6 +46,7 @@ import static org.jhotdraw.samples.svg.SVGAttributeKeys.*;
  * <br>2.0 2007-04-14 Adapted for new AttributeKeys.TRANSFORM support.
  * <br>1.0 July 8, 2006 Created.
  */
+
 public class SVGTextFigure
         extends SVGAttributedFigure
         implements TextHolderFigure, SVGFigure {
@@ -63,10 +65,11 @@ public class SVGTextFigure
     /**
      * Creates a new instance.
      */
+
     public SVGTextFigure() {
         this("Text");
     }
-
+    @FeatureEntryPoint("SVGTextFigure")
     public SVGTextFigure(String text) {
         setText(text);
         SVGAttributeKeys.setDefaults(this);
