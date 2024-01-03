@@ -12,6 +12,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      USER_PACKAGE_READ: ${{ secrets.USER_PACKAGE_READ }}
+      TOKEN_PACKAGE_READ: ${{ secrets.M2_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v4
@@ -22,4 +25,4 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn -B --settings settings.xml clean package --file pom.xml -DskipTests
