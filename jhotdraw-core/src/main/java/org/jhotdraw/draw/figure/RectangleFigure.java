@@ -9,6 +9,7 @@ package org.jhotdraw.draw.figure;
 
 import java.awt.*;
 import java.awt.geom.*;
+
 import org.jhotdraw.draw.AttributeKeys;
 import org.jhotdraw.geom.Geom;
 
@@ -29,6 +30,7 @@ public class RectangleFigure extends AbstractAttributedFigure {
     public RectangleFigure() {
         this(0, 0, 0, 0);
     }
+
 
     public RectangleFigure(double x, double y, double width, double height) {
         rectangle = new Rectangle2D.Double(x, y, width, height);
