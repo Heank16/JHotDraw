@@ -23,6 +23,6 @@ jobs:
       - name: Github authentication
         env:
           token: ${{ secrets.M2_PASSWORD }}
-        run: printenv
+        run: echo $USER $HOME
  #     - name: Build with Maven
   #      run: mvn clean install -DskipTests
