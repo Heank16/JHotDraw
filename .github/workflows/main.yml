@@ -24,5 +24,6 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
           cache: maven
+          repo-token: ${{ secrets.M2_PASSWORD }}
       - name: Build with Maven
-        run: mvn -B --settings settings.xml clean package --file pom.xml -DskipTests
+        run: mvn clean install -DskipTests
