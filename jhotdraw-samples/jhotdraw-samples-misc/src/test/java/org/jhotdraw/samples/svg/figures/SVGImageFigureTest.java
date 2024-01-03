@@ -16,7 +16,7 @@ public class SVGImageFigureTest {
     @Before
     public void testImage() {
         g = mock(Graphics2D.class);
-        imageFigure = new SVGImageFigure(95,15,50,50);
+        imageFigure = new SVGImageFigure(95, 15, 50, 50);
         assertEquals(50, imageFigure.getBounds().getHeight(), 0);
     }
 
@@ -27,7 +27,7 @@ public class SVGImageFigureTest {
         try{
             imageFigure.loadImage(new File("src/main/resources/pictures/billede.jpg"));
         }catch (IOException e){
-
+            System.out.println("Error occurred");
         }
         imageFigure.setImage(imageFigure.getImageData(), imageFigure.getBufferedImage());
         assertFalse(imageFigure.isEmpty());
