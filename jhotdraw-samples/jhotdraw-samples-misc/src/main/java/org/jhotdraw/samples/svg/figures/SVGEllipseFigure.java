@@ -51,6 +51,7 @@ public class SVGEllipseFigure extends SVGAttributedFigure implements SVGFigure {
     public SVGEllipseFigure() {
         this(0, 0, 0, 0);
     }
+
     @FeatureEntryPoint("Circle tool")
     public SVGEllipseFigure(double x, double y, double width, double height) {
         ellipse = new Ellipse2D.Double(x, y, width, height);
