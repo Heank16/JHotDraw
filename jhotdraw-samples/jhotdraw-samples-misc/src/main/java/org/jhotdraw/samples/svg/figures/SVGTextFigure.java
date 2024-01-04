@@ -118,17 +118,7 @@ public class SVGTextFigure
         if (cachedBounds == null) {
             cachedBounds = new Rectangle2D.Double();
             cachedBounds.setRect(getTextShape().getBounds2D());
-            String text = getText();
-            if (text == null || text.length() == 0) {
-                text = " ";
-            }
-            FontRenderContext frc = getFontRenderContext();
-            HashMap<TextAttribute, Object> textAttributes = new HashMap<TextAttribute, Object>();
-            textAttributes.put(TextAttribute.FONT, getFont());
-            if (get(FONT_UNDERLINE)) {
-                textAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-            }
-            TextLayout textLayout = new TextLayout(text, textAttributes, frc);
+            TextLayout textLayout = getTextLayout();
             cachedBounds.setRect(coordinates[0].x, coordinates[0].y - textLayout.getAscent(), textLayout.getAdvance(), textLayout.getAscent());
             AffineTransform tx = new AffineTransform();
             tx.translate(coordinates[0].x, coordinates[0].y);
@@ -183,17 +173,7 @@ public class SVGTextFigure
 
     private Shape getTextShape() {
         if (cachedTextShape == null) {
-            String text = getText();
-            if (text == null || text.length() == 0) {
-                text = " ";
-            }
-            FontRenderContext frc = getFontRenderContext();
-            HashMap<TextAttribute, Object> textAttributes = new HashMap<TextAttribute, Object>();
-            textAttributes.put(TextAttribute.FONT, getFont());
-            if (get(FONT_UNDERLINE)) {
-                textAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-            }
-            TextLayout textLayout = new TextLayout(text, textAttributes, frc);
+            TextLayout textLayout = getTextLayout();
             AffineTransform tx = new AffineTransform();
             tx.translate(coordinates[0].x, coordinates[0].y);
             switch (get(TEXT_ANCHOR)) {
@@ -215,6 +195,22 @@ public class SVGTextFigure
             cachedTextShape = textLayout.getOutline(tx);
         }
         return cachedTextShape;
+    }
+
+    private TextLayout getTextLayout() {
+        String text = getText();
+        if (text == null || text.isEmpty()) {
+            text = " ";
+        }
+
+        FontRenderContext frc = getFontRenderContext();
+        HashMap<TextAttribute, Object> textAttributes = new HashMap<TextAttribute, Object>();
+        textAttributes.put(TextAttribute.FONT, getFont());
+        if (get(FONT_UNDERLINE)) {
+            textAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+        }
+
+        return new TextLayout(text, textAttributes, frc);
     }
 
     @Override
